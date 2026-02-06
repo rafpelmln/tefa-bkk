@@ -6,16 +6,19 @@
   FUNGSI:
   Halaman utama aplikasi (route: /)
   
-  STRUKTUR:
-  Halaman ini menggunakan section components yang terpisah.
-  Setiap section adalah component reusable di folder:
-  /components/sections/
+  STRUKTUR SECTIONS:
+  Halaman ini menggunakan sections dari folder:
+  /components/sections/home/
   
   SECTIONS YANG DIGUNAKAN:
   1. HeroSection      - Hero dengan search bar
   2. JobListSection   - Daftar lowongan terbaru
   3. CategorySection  - Kategori berdasarkan jurusan
   4. CtaSection       - Call to action
+  
+  CARA PANGGIL SECTION:
+  Sections[NamaFolder][NamaSection]
+  Contoh: SectionsHomeHeroSection
   
   ============================================
 -->
@@ -54,21 +57,20 @@ const handleCategoryClick = (category: string) => {
   <div>
     <!--
       ========================================
-      SECTION COMPONENTS
+      SECTIONS HALAMAN HOME
       ========================================
-      Setiap section dipisah menjadi component sendiri
-      untuk memudahkan maintenance dan reusability.
+      Semua section untuk halaman ini ada di:
+      /components/sections/home/
       
-      Components ada di: /components/sections/
-      Auto-import, tidak perlu import manual.
+      Penamaan component: SectionsHome[NamaSection]
       ========================================
     -->
 
     <!-- 1. Hero Section: Headline + Search Bar -->
-    <SectionsHeroSection @search="handleSearch" />
+    <SectionsHomeHeroSection @search="handleSearch" />
 
     <!-- 2. Job List Section: Lowongan Terbaru -->
-    <SectionsJobListSection
+    <SectionsHomeJobListSection
       :jobs="jobs"
       :loading="isLoading"
       :limit="4"
@@ -79,9 +81,9 @@ const handleCategoryClick = (category: string) => {
     />
 
     <!-- 3. Category Section: Kategori Jurusan -->
-    <SectionsCategorySection @category-click="handleCategoryClick" />
+    <SectionsHomeCategorySection @category-click="handleCategoryClick" />
 
     <!-- 4. CTA Section: Call to Action -->
-    <SectionsCtaSection />
+    <SectionsHomeCtaSection />
   </div>
 </template>

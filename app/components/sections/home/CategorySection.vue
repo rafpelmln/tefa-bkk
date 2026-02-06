@@ -1,22 +1,22 @@
 <!--
   ============================================
-  SECTION: CategorySection.vue
+  SECTION: home/CategorySection.vue
   ============================================
   
+  LOKASI: components/sections/home/
+  HALAMAN: Beranda (pages/index.vue)
+  
   FUNGSI:
-  Section untuk menampilkan kategori lowongan.
-  Berdasarkan jurusan SMK.
+  Section untuk menampilkan kategori lowongan berdasarkan jurusan SMK.
   
   CARA PAKAI:
   ```vue
-  <CategorySection @category-click="handleCategoryClick" />
+  <SectionsHomeCategorySection @category-click="handleCategoryClick" />
   ```
   
   ============================================
 -->
 <script setup lang="ts">
-import { ROUTES } from '~/config/routes'
-
 // ========== EMITS ==========
 const emit = defineEmits<{
   categoryClick: [category: string]

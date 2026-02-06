@@ -1,7 +1,10 @@
 <!--
   ============================================
-  SECTION: HeroSection.vue
+  SECTION: home/HeroSection.vue
   ============================================
+  
+  LOKASI: components/sections/home/
+  HALAMAN: Beranda (pages/index.vue)
   
   FUNGSI:
   Hero section untuk halaman beranda.
@@ -9,9 +12,7 @@
   
   CARA PAKAI:
   ```vue
-  <HeroSection 
-    @search="handleSearch" 
-  />
+  <SectionsHomeHeroSection @search="handleSearch" />
   ```
   
   ============================================

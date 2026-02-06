@@ -1,14 +1,17 @@
 <!--
   ============================================
-  SECTION: CtaSection.vue
+  SECTION: home/CtaSection.vue
   ============================================
+  
+  LOKASI: components/sections/home/
+  HALAMAN: Beranda (pages/index.vue)
   
   FUNGSI:
   Call-to-action section untuk mendorong user daftar.
   
   CARA PAKAI:
   ```vue
-  <CtaSection />
+  <SectionsHomeCtaSection />
   ```
   
   ============================================

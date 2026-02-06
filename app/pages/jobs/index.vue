@@ -6,10 +6,13 @@
   FUNGSI:
   Halaman daftar semua lowongan kerja (route: /jobs)
   
-  FITUR:
-  - Search & filter lowongan
-  - Pagination
-  - Filter berdasarkan kategori, lokasi, tipe
+  STRUKTUR SECTIONS:
+  Halaman ini menggunakan sections dari folder:
+  /components/sections/jobs/
+  
+  SECTIONS YANG DIGUNAKAN:
+  1. HeaderSection  - Header halaman
+  2. FilterSection  - Sidebar filter
   
   ============================================
 -->
@@ -28,7 +31,7 @@ const { jobs, isLoading, searchJobs } = useJobs()
 const route = useRoute()
 const router = useRouter()
 
-// State
+// State untuk filter
 const searchQuery = ref((route.query.q as string) || '')
 const selectedType = ref('')
 const selectedLocation = ref('')
@@ -78,77 +81,32 @@ const clearFilters = () => {
 
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <div class="bg-blue-600 text-white py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold">Lowongan Kerja</h1>
-        <p class="mt-2 text-blue-100">
-          Temukan {{ jobs.length }} lowongan yang tersedia
-        </p>
-      </div>
-    </div>
+    <!--
+      ========================================
+      SECTIONS HALAMAN JOBS
+      ========================================
+      Semua section untuk halaman ini ada di:
+      /components/sections/jobs/
+      
+      Penamaan component: SectionsJobs[NamaSection]
+      ========================================
+    -->
+
+    <!-- 1. Header Section -->
+    <SectionsJobsHeaderSection :total-jobs="jobs.length" />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="flex flex-col lg:flex-row gap-8">
-        <!-- Sidebar Filters -->
-        <aside class="lg:w-64 flex-shrink-0">
-          <div class="bg-white rounded-xl p-6 shadow-sm sticky top-4">
-            <div class="flex justify-between items-center mb-4">
-              <h2 class="font-semibold text-gray-900">Filter</h2>
-              <button
-                class="text-sm text-blue-600 hover:text-blue-700"
-                @click="clearFilters"
-              >
-                Reset
-              </button>
-            </div>
-
-            <!-- Search -->
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Cari
-              </label>
-              <input
-                v-model="searchQuery"
-                type="text"
-                placeholder="Posisi atau perusahaan..."
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-            </div>
-
-            <!-- Type Filter -->
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Tipe Pekerjaan
-              </label>
-              <select
-                v-model="selectedType"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">Semua Tipe</option>
-                <option v-for="type in jobTypes" :key="type" :value="type">
-                  {{ type }}
-                </option>
-              </select>
-            </div>
-
-            <!-- Location Filter -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Lokasi
-              </label>
-              <select
-                v-model="selectedLocation"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">Semua Lokasi</option>
-                <option v-for="loc in locations" :key="loc" :value="loc">
-                  {{ loc }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </aside>
+        
+        <!-- 2. Filter Section (Sidebar) -->
+        <SectionsJobsFilterSection
+          v-model:search="searchQuery"
+          v-model:type="selectedType"
+          v-model:location="selectedLocation"
+          :job-types="jobTypes"
+          :locations="locations"
+          @reset="clearFilters"
+        />
 
         <!-- Job List -->
         <main class="flex-1">

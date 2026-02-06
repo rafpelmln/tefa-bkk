@@ -42,29 +42,139 @@ npm run dev
 ```
 tefa-bkk/
 ├── app/
-│   ├── app.vue              # Root component aplikasi
-│   ├── layouts/             # Template layout halaman
-│   │   └── default.vue      # Layout utama (navbar + footer)
-│   ├── pages/               # Halaman-halaman (auto-routing)
-│   │   └── index.vue        # Halaman utama "/"
-│   ├── components/          # UI components reusable
-│   │   └── JobCard.vue      # Card untuk menampilkan lowongan
-│   └── composables/         # Logic reusable (fetch, state)
-│       └── useJobs.ts       # Composable untuk fetch data lowongan
-├── public/                  # Static assets
-├── nuxt.config.ts           # Konfigurasi Nuxt
-├── package.json             # Dependencies
-└── README.md                # Dokumentasi ini
+│   ├── app.vue                    # Root component aplikasi
+│   ├── router.options.ts          # Konfigurasi router (scroll, behavior)
+│   │
+│   ├── config/                    # Konfigurasi aplikasi
+│   │   └── routes.ts              # Definisi semua routes
+│   │
+│   ├── layouts/                   # Template layout halaman
+│   │   └── default.vue            # Layout utama (navbar + footer)
+│   │
+│   ├── pages/                     # Halaman-halaman (auto-routing)
+│   │   ├── index.vue              # Halaman beranda "/"
+│   │   ├── jobs/
+│   │   │   ├── index.vue          # Daftar lowongan "/jobs"
+│   │   │   └── [id].vue           # Detail lowongan "/jobs/:id"
+│   │   └── dashboard/
+│   │       └── index.vue          # Dashboard user "/dashboard"
+│   │
+│   ├── components/                # UI components reusable
+│   │   ├── JobCard.vue            # Card untuk menampilkan lowongan
+│   │   │
+│   │   └── sections/              # Section per halaman
+│   │       ├── home/              # Sections untuk halaman beranda
+│   │       │   ├── HeroSection.vue
+│   │       │   ├── JobListSection.vue
+│   │       │   ├── CategorySection.vue
+│   │       │   └── CtaSection.vue
+│   │       │
+│   │       ├── jobs/              # Sections untuk halaman lowongan
+│   │       │   ├── HeaderSection.vue
+│   │       │   └── FilterSection.vue
+│   │       │
+│   │       └── dashboard/         # Sections untuk halaman dashboard
+│   │           ├── StatsSection.vue
+│   │           └── RecentApplicationsSection.vue
+│   │
+│   └── composables/               # Logic reusable (fetch, state)
+│       └── useJobs.ts             # Composable untuk data lowongan
+│
+├── public/                        # Static assets
+├── nuxt.config.ts                 # Konfigurasi Nuxt
+├── package.json                   # Dependencies
+└── README.md                      # Dokumentasi ini
 ```
 
 ### Penjelasan Tiap Folder
 
 | Folder | Fungsi |
 |--------|--------|
+| `config/` | Konfigurasi aplikasi seperti routes, constants, dll |
 | `layouts/` | Template wrapper untuk halaman. Berisi elemen yang sama di setiap halaman (navbar, sidebar, footer) |
 | `pages/` | Halaman aplikasi. Nama file = route URL. `pages/index.vue` = `/`, `pages/jobs/[id].vue` = `/jobs/123` |
 | `components/` | UI components yang bisa dipakai ulang. Auto-import, tidak perlu import manual |
+| `components/sections/[halaman]/` | Section components per halaman. Dipanggil dengan prefix `Sections[Halaman]` |
 | `composables/` | Logic reusable (fetch API, state management, utilities). Harus diawali `use` (contoh: `useJobs`) |
+
+---
+
+## 🧩 Struktur Sections
+
+### Konsep
+Setiap halaman punya folder sections sendiri di `components/sections/[nama-halaman]/`.
+Ini membuat kode lebih terorganisir dan mudah di-maintain.
+
+### Cara Penamaan Component
+```
+components/sections/[halaman]/[NamaSection].vue
+↓
+Sections[Halaman][NamaSection]
+```
+
+### Contoh Penggunaan
+```vue
+<!-- Halaman: pages/index.vue -->
+<!-- Sections dari: components/sections/home/ -->
+
+<template>
+  <div>
+    <SectionsHomeHeroSection @search="handleSearch" />
+    <SectionsHomeJobListSection :jobs="jobs" />
+    <SectionsHomeCategorySection />
+    <SectionsHomeCtaSection />
+  </div>
+</template>
+```
+
+```vue
+<!-- Halaman: pages/dashboard/index.vue -->
+<!-- Sections dari: components/sections/dashboard/ -->
+
+<template>
+  <div>
+    <SectionsDashboardStatsSection />
+    <SectionsDashboardRecentApplicationsSection />
+  </div>
+</template>
+```
+
+### Daftar Sections
+
+| Halaman | Section | Component |
+|---------|---------|-----------|
+| Home | Hero | `<SectionsHomeHeroSection />` |
+| Home | JobList | `<SectionsHomeJobListSection />` |
+| Home | Category | `<SectionsHomeCategorySection />` |
+| Home | CTA | `<SectionsHomeCtaSection />` |
+| Jobs | Header | `<SectionsJobsHeaderSection />` |
+| Jobs | Filter | `<SectionsJobsFilterSection />` |
+| Dashboard | Stats | `<SectionsDashboardStatsSection />` |
+| Dashboard | Recent | `<SectionsDashboardRecentApplicationsSection />` |
+
+---
+
+## 🛣️ Routing
+
+### File Konfigurasi Routes
+Semua routes didefinisikan di `app/config/routes.ts`:
+
+```typescript
+import { ROUTES } from '~/config/routes'
+
+// Navigasi ke halaman
+router.push(ROUTES.HOME)                    // → /
+router.push(ROUTES.JOBS.LIST)               // → /jobs
+router.push(ROUTES.JOBS.DETAIL(123))        // → /jobs/123
+router.push(ROUTES.AUTH.LOGIN)              // → /auth/login
+```
+
+### Auto-Routing (pages/)
+| File | URL | Deskripsi |
+|------|-----|-----------|
+| `pages/index.vue` | `/` | Beranda |
+| `pages/jobs/index.vue` | `/jobs` | Daftar lowongan |
+| `pages/jobs/[id].vue` | `/jobs/:id` | Detail lowongan |
 
 ---
 

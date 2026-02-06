@@ -1,19 +1,20 @@
 <!--
   ============================================
-  SECTION: JobListSection.vue
+  SECTION: home/JobListSection.vue
   ============================================
   
+  LOKASI: components/sections/home/
+  HALAMAN: Beranda (pages/index.vue)
+  
   FUNGSI:
-  Section untuk menampilkan daftar lowongan kerja.
-  Bisa dipakai di halaman beranda atau halaman lowongan.
+  Section untuk menampilkan daftar lowongan kerja di beranda.
   
   CARA PAKAI:
   ```vue
-  <JobListSection 
+  <SectionsHomeJobListSection 
     :jobs="jobsData"
     :loading="isLoading"
     title="Lowongan Terbaru"
-    :show-more-link="true"
     @job-click="handleJobClick"
   />
   ```
